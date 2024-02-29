@@ -1,21 +1,28 @@
 import {styled} from "styled-components";
 import Posts from "../../components/Posts/Posts.tsx";
 import {useAuth} from "../../hooks/useAuth.tsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Modal from "../../components/Posts/components/Modal/Modal.tsx";
 
 const PostsPage = () => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const {account} = useAuth();
 
+    useEffect(() => {
+        if(showModal) {
+            document.body.style.overflow = "hidden";
+        } else if(!showModal) {
+            document.body.style.overflow = "visible";
+        }
+    }, [showModal]);
+
     const handleOnClick = () => {
-        console.log("click");
         setShowModal(true);
     };
 
     const toggleModal = (toggle: boolean) => {
-        setShowModal(toggle)
-    }
+        setShowModal(toggle);
+    };
 
     return (
         <PostsPageStyled>
@@ -25,7 +32,10 @@ const PostsPage = () => {
                     alt=""
                 />
                 <span onClick={handleOnClick}>Quoi de neuf ? {account.email}</span>
-                {showModal && <Modal toggleModal={toggleModal}/>}
+                {showModal && <Modal
+                    toggleModal={toggleModal}
+                    showModal={showModal}
+                />}
             </div>
             <Posts/>
         </PostsPageStyled>
