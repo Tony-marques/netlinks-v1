@@ -1,6 +1,6 @@
 import {styled} from "styled-components";
-import {useEffect, useState} from "react";
 import {useAuth} from "../../hooks/useAuth.tsx";
+import {useQuery} from "@tanstack/react-query";
 
 interface IPost {
     id: number;
@@ -14,23 +14,24 @@ interface IPost {
     };
 }
 
+const fetchPosts = async (): Promise<IPost[]> => {
+    const response = await fetch("https://localhost:8000/posts", {
+        credentials: "include"
+    });
+    const data = await response.json();
+    if(!response.ok) {
+        localStorage.removeItem("user");
+    }
+    return data
+}
+
 const PostsPage = () => {
-    const [posts, setPosts] = useState<IPost[] | null>([]);
     const {account} = useAuth();
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const response = await fetch("https://localhost:8000/posts", {
-                credentials: "include"
-            });
-            const data = await response.json();
-            if(!response.ok) {
-                localStorage.removeItem("user");
-            }
-            setPosts(data);
-        };
-        fetchData();
-    }, []);
+    const {data: posts} = useQuery({
+        queryKey: ["posts"],
+        queryFn: fetchPosts
+    })
 
     return (
         <PostsPageStyled>
