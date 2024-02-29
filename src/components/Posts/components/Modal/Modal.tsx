@@ -1,7 +1,8 @@
 import {styled} from "styled-components";
 import {createPortal} from "react-dom";
-import {useState} from "react";
+import {ChangeEvent, FormEvent, useState} from "react";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {modalConfigs} from "./ModalConfigs.tsx";
 
 interface ModalProps {
     toggleModal: (toggle: boolean) => void;
@@ -17,8 +18,7 @@ const createPost = async (formData: { title: string, content: string }) => {
             "Content-Type": "application/json"
         }
     });
-    const data = await response.json();
-    return data;
+    return await response.json();
 };
 
 const Modal = ({toggleModal}: ModalProps) => {
@@ -26,44 +26,32 @@ const Modal = ({toggleModal}: ModalProps) => {
         title: "",
         content: ""
     });
-    const queryClient = useQueryClient()
+    const queryClient = useQueryClient();
 
     const {mutate} = useMutation({
         mutationKey: ["posts"],
         mutationFn: createPost,
-        onSuccess: (data) => {
-            console.log(data);
+        onSuccess: () => {
             toggleModal(false);
-            queryClient.invalidateQueries({queryKey: ['posts']})
+            queryClient.invalidateQueries({queryKey: ["posts"]});
         }
     });
 
-    console.log(form);
-    const handleOnChange = (e) => {
+    const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
         setForm({
             ...form,
             [e.target.name]: e.target.value
         });
     };
 
-    const handleOnSubmit = async (e) => {
+    const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        // const response = await fetch("https://localhost:8000/posts", {
-        //     method: "POST",
-        //     body: JSON.stringify(form),
-        //     credentials: "include",
-        //     headers: {
-        //         accept: "application/json",
-        //         "Content-Type": "application/json"
-        //     }
-        // });
-        // const data = await response.json();
-        // if(response.ok) {
-        //     console.log(data);
-        //     toggleModal(false);
-        // }
         mutate(form);
     };
+
+    const inputs = modalConfigs(handleOnChange);
+
+    console.log(inputs);
 
     return createPortal(
         <ModalStyled>
@@ -79,18 +67,16 @@ const Modal = ({toggleModal}: ModalProps) => {
                         action=""
                         method="POST"
                     >
-                        <input
-                            type="text"
-                            placeholder="titre"
-                            name="title"
-                            onChange={handleOnChange}
-                        />
-                        <input
-                            type="text"
-                            placeholder="contenu"
-                            name="content"
-                            onChange={handleOnChange}
-                        />
+                        {inputs?.map(({id, type, name, onChange}) => {
+                            return (
+                                <input
+                                    key={id}
+                                    type={type}
+                                    name={name}
+                                    onChange={onChange}
+                                />
+                            );
+                        })}
                         <button>Publier</button>
                     </form>
                 </div>
