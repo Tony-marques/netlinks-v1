@@ -1,35 +1,11 @@
 import {styled} from "styled-components";
-import {useQuery} from "@tanstack/react-query";
 import Post from "./components/Post/Post.tsx";
+import {useFetchPost} from "../../hooks/useFetchPost.tsx";
+import {IPost} from "../../interfaces/Post.ts";
 
-interface IPost {
-    id: number;
-    title: string;
-    content: string;
-    user: {
-        id: number;
-        email: string;
-        roles: [];
-        image: undefined
-    };
-}
-
-const fetchPosts = async (): Promise<IPost[]> => {
-    const response = await fetch("https://localhost:8000/posts", {
-        credentials: "include"
-    });
-    const data = await response.json();
-    if(!response.ok) {
-        localStorage.removeItem("user");
-    }
-    return data;
-};
 const Posts = () => {
+    const {posts} = useFetchPost();
 
-    const {data: posts} = useQuery({
-        queryKey: ["posts"],
-        queryFn: fetchPosts
-    });
     return (
         <PostsStyled>
             {posts?.map(({id, title, user}: IPost) => {
