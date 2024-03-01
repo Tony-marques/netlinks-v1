@@ -1,20 +1,12 @@
 import {styled} from "styled-components";
 import Posts from "../../components/Posts/Posts.tsx";
 import {useAuth} from "../../hooks/useAuth.tsx";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import Modal from "../../components/Posts/components/Modal/Modal.tsx";
 
 const PostsPage = () => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const {account} = useAuth();
-
-    useEffect(() => {
-        if(showModal) {
-            document.body.style.overflow = "hidden";
-        } else if(!showModal) {
-            document.body.style.overflow = "visible";
-        }
-    }, [showModal]);
 
     const handleOnClick = () => {
         setShowModal(true);
@@ -54,7 +46,7 @@ const PostsPageStyled = styled.div`
         width: 600px;
         background-color: #242526;
         //color: #E0E1E6;
-        border-radius: 5px;
+        border-radius: 10px;
         display: flex;
         gap: 1rem;
         align-items: center;

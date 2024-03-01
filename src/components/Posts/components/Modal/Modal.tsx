@@ -1,43 +1,21 @@
 import {styled} from "styled-components";
 import {createPortal} from "react-dom";
-import {MouseEvent, ChangeEvent, FormEvent, useState, useRef, useEffect} from "react";
-import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {ChangeEvent, FormEvent, MouseEvent, useEffect, useRef, useState} from "react";
 import {modalConfigs} from "./ModalConfigs.tsx";
+import {useFetchPost} from "../../../../hooks/useFetchPost.tsx";
 
 interface ModalProps {
     toggleModal: (toggle: boolean) => void;
     showModal: boolean;
 }
 
-const createPost = async (formData: { title: string, content: string }) => {
-    const response = await fetch("https://localhost:8000/posts", {
-        method: "POST",
-        body: JSON.stringify(formData),
-        credentials: "include",
-        headers: {
-            accept: "application/json",
-            "Content-Type": "application/json"
-        }
-    });
-    return await response.json();
-};
-
 const Modal = ({toggleModal, showModal}: ModalProps) => {
     const [form, setForm] = useState({
         title: "",
         content: ""
     });
-    const queryClient = useQueryClient();
+    const {mutatePost} = useFetchPost(toggleModal);
     const titleRef = useRef<HTMLInputElement>(null);
-
-    const {mutate} = useMutation({
-        mutationKey: ["posts"],
-        mutationFn: createPost,
-        onSuccess: () => {
-            toggleModal(false);
-            queryClient.invalidateQueries({queryKey: ["posts"]});
-        }
-    });
 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
         setForm({
@@ -46,13 +24,22 @@ const Modal = ({toggleModal, showModal}: ModalProps) => {
         });
     };
 
+    useEffect(() => {
+        if(showModal) {
+            document.body.style.overflow = "hidden";
+        }
+        return () => {
+            document.body.style.overflow = "visible";
+        };
+    }, [showModal]);
+
     const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        mutate(form);
+        mutatePost(form);
     };
 
     useEffect(() => {
-        titleRef.current?.focus()
+        titleRef.current?.focus();
     }, []);
 
     const handleCloseModal = () => {
@@ -65,7 +52,7 @@ const Modal = ({toggleModal, showModal}: ModalProps) => {
         <ModalStyled onClick={handleCloseModal}>
             <div
                 className="modal"
-                onClick={(e:MouseEvent<HTMLDivElement>) => e.stopPropagation()}
+                onClick={(e: MouseEvent<HTMLDivElement>) => e.stopPropagation()}
             >
 
                 <div className="header">
