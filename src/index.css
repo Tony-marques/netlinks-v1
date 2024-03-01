@@ -4,8 +4,16 @@
     padding: 0;
 }
 
-body{
+body {
     background-color: #18191A;
     min-height: 100vh;
     font-family: "Montserrat", sans-serif;
+}
+
+.active {
+    border-bottom-color: #0866FF !important;
+
+    i {
+        color: #0866FF !important;
+    }
 }
