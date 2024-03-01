@@ -3,6 +3,7 @@ import App from "../App.tsx";
 import LoginPage from "../pages/LoginPage/LoginPage.tsx";
 import PostsPage from "../pages/PostsPage/PostsPage.tsx";
 import PrivateRoute from "../components/PrivateRoute/PrivateRoute.tsx";
+import Layout from "../components/Layout/Layout.tsx";
 
 export const router = createBrowserRouter([
     {
@@ -13,8 +14,13 @@ export const router = createBrowserRouter([
                 element: <PrivateRoute/>,
                 children: [
                     {
-                        path: "/",
-                        element: <PostsPage/>
+                        element: <Layout/>,
+                        children: [
+                            {
+                                path: "/",
+                                element: <PostsPage/>
+                            }
+                        ]
                     },
                 ]
             },
