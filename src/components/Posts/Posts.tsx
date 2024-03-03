@@ -1,14 +1,15 @@
 import {styled} from "styled-components";
 import Post from "./components/Post/Post.tsx";
-import {useFetchPost} from "../../hooks/useFetchPost.tsx";
 import {IPost} from "../../interfaces/Post.ts";
+import {usePostContext} from "../../contexts/PostContext.tsx";
 
 const Posts = () => {
-    const {posts} = useFetchPost();
+
+const { filteredPosts} = usePostContext()
 
     return (
         <PostsStyled>
-            {posts?.map(({id, title, user}: IPost) => {
+            {filteredPosts?.map(({id, title, user}: IPost) => {
                 return (
                     <Post
                         key={id}
@@ -27,6 +28,4 @@ const PostsStyled = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
-
-
 `;

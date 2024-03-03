@@ -1,19 +1,19 @@
 import {styled} from "styled-components";
 import Posts from "../../components/Posts/Posts.tsx";
 import {useAuth} from "../../hooks/useAuth.tsx";
-import {useState} from "react";
 import Modal from "../../components/Posts/components/Modal/Modal.tsx";
+import {usePostContext} from "../../contexts/PostContext.tsx";
 
 const PostsPage = () => {
-    const [showModal, setShowModal] = useState<boolean>(false);
     const {account} = useAuth();
+    const {showModal, handleShowModal} = usePostContext()
 
     const handleOnClick = () => {
-        setShowModal(true);
+        handleShowModal(true);
     };
 
     const toggleModal = (toggle: boolean) => {
-        setShowModal(toggle);
+        handleShowModal(toggle);
     };
 
     return (

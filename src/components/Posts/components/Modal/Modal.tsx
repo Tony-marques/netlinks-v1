@@ -2,7 +2,7 @@ import {styled} from "styled-components";
 import {createPortal} from "react-dom";
 import {ChangeEvent, FormEvent, MouseEvent, useEffect, useRef, useState} from "react";
 import {modalConfigs} from "./ModalConfigs.tsx";
-import {useFetchPost} from "../../../../hooks/useFetchPost.tsx";
+import {usePostContext} from "../../../../contexts/PostContext.tsx";
 
 interface ModalProps {
     toggleModal: (toggle: boolean) => void;
@@ -14,7 +14,8 @@ const Modal = ({toggleModal, showModal}: ModalProps) => {
         title: "",
         content: ""
     });
-    const {mutatePost} = useFetchPost(toggleModal);
+
+    const {mutatePost} = usePostContext();
     const titleRef = useRef<HTMLInputElement>(null);
 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {

@@ -1,7 +1,15 @@
 import {styled} from "styled-components";
 import {Link, NavLink} from "react-router-dom";
+import {usePostContext} from "../../contexts/PostContext.tsx";
+import {ChangeEvent} from "react";
 
 const Navbar = () => {
+    const {handleUpdateSearch} = usePostContext()
+
+    const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+        handleUpdateSearch(e.target.value)
+    }
+
     return (
         <NavbarStyled>
             <div className="navbar-left">
@@ -12,6 +20,7 @@ const Navbar = () => {
                     <input
                         type="text"
                         placeholder="Rechercher sur Netlinks"
+                        onChange={handleSearch}
                     />
                 </div>
 
