@@ -14,11 +14,31 @@ export const usePost = () => {
         queryFn: UserAPI.getPosts
     });
 
-    const {mutate: mutatePost} = useMutation({
+    const {mutate: createPost} = useMutation({
         mutationKey: ["posts"],
         mutationFn: UserAPI.createPost,
         onSuccess: () => {
             setShowModal?.(false);
+            queryClient.invalidateQueries({queryKey: ["posts"]});
+        }
+    });
+
+    const {mutate: deletePost} = useMutation({
+        mutationKey: ["posts"],
+        mutationFn: async (id:number) => {
+            const response = await fetch(`https://localhost:8000/posts/${id}`, {
+                method: "DELETE",
+                credentials: "include",
+                headers: {
+                    accept: "application/json",
+                    "Content-Type": "application/json"
+                }
+            });
+            return await response.json();
+        },
+
+        onSettled: () => {
+            console.log("settled");
             queryClient.invalidateQueries({queryKey: ["posts"]});
         }
     });
@@ -43,6 +63,7 @@ export const usePost = () => {
         filteredPosts,
         showModal,
         handleShowModal,
-        mutatePost
+        createPost,
+        deletePost
     };
 };

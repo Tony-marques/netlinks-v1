@@ -11,7 +11,7 @@ interface IPostContext {
     handleUpdateSearch: (value: string) => void;
     showModal: boolean;
     handleShowModal: (bool: boolean) => void;
-    mutatePost: (form: { title: string, content: string }) => void;
+    createPost: (form: { title: string, content: string }) => void;
 }
 
 const PostContext = createContext<IPostContext | null>(null);
@@ -23,7 +23,7 @@ export const PostContextProvider = ({children}: PostContextProviderProps) => {
         filteredPosts,
         showModal,
         handleShowModal,
-        mutatePost
+        createPost
     } = usePost();
 
     const contextValues = useMemo(() => ({
@@ -31,7 +31,7 @@ export const PostContextProvider = ({children}: PostContextProviderProps) => {
         filteredPosts,
         showModal,
         handleShowModal,
-        mutatePost
+        createPost
     }), [filteredPosts, showModal]);
 
     return <PostContext.Provider value={contextValues}>

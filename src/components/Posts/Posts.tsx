@@ -5,7 +5,7 @@ import {usePostContext} from "../../contexts/PostContext.tsx";
 
 const Posts = () => {
 
-const { filteredPosts} = usePostContext()
+    const {filteredPosts} = usePostContext();
 
     return (
         <PostsStyled>
@@ -13,6 +13,7 @@ const { filteredPosts} = usePostContext()
                 return (
                     <Post
                         key={id}
+                        id={id}
                         title={title}
                         user={user}
                     />

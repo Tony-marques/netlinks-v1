@@ -15,7 +15,7 @@ const Modal = ({toggleModal, showModal}: ModalProps) => {
         content: ""
     });
 
-    const {mutatePost} = usePostContext();
+    const {createPost} = usePostContext();
     const titleRef = useRef<HTMLInputElement>(null);
 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -36,7 +36,7 @@ const Modal = ({toggleModal, showModal}: ModalProps) => {
 
     const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        mutatePost(form);
+        createPost(form);
     };
 
     useEffect(() => {

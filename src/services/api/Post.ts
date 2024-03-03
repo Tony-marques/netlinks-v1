@@ -17,7 +17,6 @@ export class UserAPI {
             console.log(err);
             return []
         }
-
     }
 
     static async createPost(formData: { title: string, content: string }) {
