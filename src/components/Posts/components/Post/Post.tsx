@@ -1,6 +1,8 @@
 import {styled} from "styled-components";
 import {useAuth} from "../../../../hooks/useAuth.tsx";
-import {usePost} from "../../../../hooks/usePost.tsx";
+import {useState} from "react";
+import Modal from "../../../Modal/Modal.tsx";
+import ConfirmDeletePost from "../ConfirmDeletePost/ConfirmDeletePost.tsx";
 
 interface PostProps {
     title: string;
@@ -15,7 +17,11 @@ interface PostProps {
 
 const Post = ({title, user, id}: PostProps) => {
     const {account} = useAuth();
-    const {deletePost} = usePost();
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+    const handleToggleModal = (bool: boolean) => {
+        setShowDeleteModal(bool);
+    };
 
     return (
         <PostStyled>
@@ -30,10 +36,19 @@ const Post = ({title, user, id}: PostProps) => {
                 {(account.id === user.id || account.roles.includes("ROLE_ADMIN")) &&
                     <i
                         className="fa-solid fa-xmark"
-                        onClick={() => deletePost(id)}
+                        onClick={() => handleToggleModal(true)}
                     ></i>
                 }
-
+                {showDeleteModal && <Modal
+                    toggleModal={handleToggleModal}
+                    showModal={showDeleteModal}
+                    title={"Etes-vous sur de vouloir supprimer ce post ?"}
+                >
+                    <ConfirmDeletePost
+                        id={id}
+                        handleToggleModal={handleToggleModal}
+                    />
+                </Modal>}
             </div>
             <p>{title}</p>
         </PostStyled>

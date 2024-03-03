@@ -1,19 +1,20 @@
 import {styled} from "styled-components";
 import Posts from "../../components/Posts/Posts.tsx";
 import {useAuth} from "../../hooks/useAuth.tsx";
-import Modal from "../../components/Posts/components/Modal/Modal.tsx";
+import Modal from "../../components/Modal/Modal.tsx";
 import {usePostContext} from "../../contexts/PostContext.tsx";
+import CreatePostForm from "../../components/Posts/components/CreatePostForm/CreatePostForm.tsx";
 
 const PostsPage = () => {
     const {account} = useAuth();
-    const {showModal, handleShowModal} = usePostContext()
+    const {showModalCreatePost, handleShowModalCreatePost} = usePostContext();
 
     const handleOnClick = () => {
-        handleShowModal(true);
+        handleShowModalCreatePost(true);
     };
 
     const toggleModal = (toggle: boolean) => {
-        handleShowModal(toggle);
+        handleShowModalCreatePost(toggle);
     };
 
     return (
@@ -24,10 +25,13 @@ const PostsPage = () => {
                     alt=""
                 />
                 <span onClick={handleOnClick}>Quoi de neuf ? {account.email}</span>
-                {showModal && <Modal
+                {showModalCreatePost && <Modal
                     toggleModal={toggleModal}
-                    showModal={showModal}
-                />}
+                    showModal={showModalCreatePost}
+                    title="Créer un post"
+                >
+                    <CreatePostForm/>
+                </Modal>}
             </div>
             <Posts/>
         </PostsPageStyled>

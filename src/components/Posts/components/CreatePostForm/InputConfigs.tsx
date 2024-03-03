@@ -1,6 +1,6 @@
 import {ChangeEvent} from "react";
 
-export const modalConfigs = (handleOnChange: (e: ChangeEvent<HTMLInputElement>) => void, titleRef) => [
+export const inputConfigs = (handleOnChange: (e: ChangeEvent<HTMLInputElement>) => void, titleRef) => [
     {
         id: 1,
         type: "text",
