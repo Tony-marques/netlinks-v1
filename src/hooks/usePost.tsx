@@ -2,11 +2,14 @@ import {useEffect, useState} from "react";
 import {IPost} from "../interfaces/Post.ts";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {UserAPI} from "../services/api/Post.ts";
+import {  toast } from 'react-toastify';
+
 
 export const usePost = () => {
     const [filteredPosts, setFilteredPosts] = useState<IPost[] | undefined>([]);
     const [search, setSearch] = useState<string>("");
-    const [showModal, setShowModal] = useState<boolean>(false);
+    const [showModalCreatePost, setShowModalCreatePost] = useState<boolean>(false);
+    const [showModalDeletePost, setShowModalDeletePost] = useState<boolean>(false);
     const queryClient = useQueryClient();
 
     const {data: posts} = useQuery({
@@ -18,14 +21,14 @@ export const usePost = () => {
         mutationKey: ["posts"],
         mutationFn: UserAPI.createPost,
         onSuccess: () => {
-            setShowModal?.(false);
+            setShowModalCreatePost?.(false);
             queryClient.invalidateQueries({queryKey: ["posts"]});
         }
     });
 
     const {mutate: deletePost} = useMutation({
         mutationKey: ["posts"],
-        mutationFn: async (id:number) => {
+        mutationFn: async (id: number) => {
             const response = await fetch(`https://localhost:8000/posts/${id}`, {
                 method: "DELETE",
                 credentials: "include",
@@ -37,9 +40,10 @@ export const usePost = () => {
             return await response.json();
         },
 
-        onSettled: () => {
-            console.log("settled");
+        onSettled: (data) => {
+            console.log(data);
             queryClient.invalidateQueries({queryKey: ["posts"]});
+            toast.success("Le post a été supprimé avec succès !")
         }
     });
 
@@ -54,16 +58,22 @@ export const usePost = () => {
         setSearch(value);
     };
 
-    const handleShowModal = (bool: boolean) => {
-        setShowModal(bool);
+    const handleShowModalCreatePost = (bool: boolean) => {
+        setShowModalCreatePost(bool);
+    };
+    const handleShowModalDeletePost = (bool: boolean) => {
+        setShowModalDeletePost(bool);
+        // console.log(showModalDeletePost);
     };
 
     return {
         handleUpdateSearch,
         filteredPosts,
-        showModal,
-        handleShowModal,
+        showModalCreatePost,
+        handleShowModalCreatePost,
         createPost,
-        deletePost
+        deletePost,
+        showModalDeletePost,
+        handleShowModalDeletePost
     };
 };
