@@ -1,5 +1,5 @@
 import {styled} from "styled-components";
-import {Link, NavLink} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import {usePostContext} from "../../contexts/PostContext.tsx";
 import {ChangeEvent} from "react";
 
@@ -33,9 +33,9 @@ const Navbar = () => {
                         </NavLink>
                     </li>
                     <li>
-                        <Link to="/connexion">
-                            <i className="fa-solid fa-house"></i>
-                        </Link>
+                        <NavLink to="/dd">
+                            <i className="fa-solid fa-users"></i>
+                        </NavLink>
                     </li>
                 </ul>
             </div>

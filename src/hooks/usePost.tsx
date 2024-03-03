@@ -2,6 +2,8 @@ import {useEffect, useState} from "react";
 import {IPost} from "../interfaces/Post.ts";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {UserAPI} from "../services/api/Post.ts";
+import {  toast } from 'react-toastify';
+
 
 export const usePost = () => {
     const [filteredPosts, setFilteredPosts] = useState<IPost[] | undefined>([]);
@@ -38,8 +40,10 @@ export const usePost = () => {
             return await response.json();
         },
 
-        onSettled: () => {
+        onSettled: (data) => {
+            console.log(data);
             queryClient.invalidateQueries({queryKey: ["posts"]});
+            toast.success("Le post a été supprimé avec succès !")
         }
     });
 
