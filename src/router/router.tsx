@@ -4,6 +4,7 @@ import LoginPage from "../pages/LoginPage/LoginPage.tsx";
 import PostsPage from "../pages/PostsPage/PostsPage.tsx";
 import PrivateRoute from "../components/PrivateRoute/PrivateRoute.tsx";
 import Layout from "../components/Layout/Layout.tsx";
+import {PostContextProvider} from "../contexts/PostContext.tsx";
 
 export const router = createBrowserRouter([
     {
@@ -11,17 +12,22 @@ export const router = createBrowserRouter([
         element: <App/>,
         children: [
             {
-                element: <PrivateRoute/>,
+                element: <PostContextProvider/>,
                 children: [
                     {
-                        element: <Layout/>,
+                        element: <PrivateRoute/>,
                         children: [
                             {
-                                path: "/",
-                                element: <PostsPage/>
+                                element: <Layout/>,
+                                children: [
+                                    {
+                                        path: "/",
+                                        element: <PostsPage/>
+                                    }
+                                ]
                             }
                         ]
-                    },
+                    }
                 ]
             },
             {
@@ -30,4 +36,4 @@ export const router = createBrowserRouter([
             }
         ]
     }
-])
+]);

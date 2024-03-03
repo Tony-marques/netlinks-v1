@@ -24,9 +24,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
         <Provider store={store}>
             <QueryClientProvider client={queryClient}>
-                <PostContextProvider>
+                {/*<PostContextProvider>*/}
                     <RouterProvider router={router}/>
-                </PostContextProvider>
+                {/*</PostContextProvider>*/}
                 <ReactQueryDevtools initialIsOpen={false}/>
                 <ToastContainer
                     position="bottom-right"

@@ -28,7 +28,8 @@ const LoginPage = () => {
             // window.location.reload()
 
         } catch (err) {
-            // console.log(err)
+        //     console.log(err)
+        //     toast("test")
         }
 
 

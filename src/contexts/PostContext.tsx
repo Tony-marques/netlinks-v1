@@ -1,6 +1,7 @@
 import {createContext, ReactNode, useContext, useMemo} from "react";
 import {IPost} from "../interfaces/Post.ts";
 import {usePost} from "../hooks/usePost.tsx";
+import {Outlet} from "react-router-dom";
 
 interface PostContextProviderProps {
     children: ReactNode;
@@ -19,7 +20,7 @@ interface IPostContext {
 
 const PostContext = createContext<IPostContext | null>(null);
 
-export const PostContextProvider = ({children}: PostContextProviderProps) => {
+export const PostContextProvider = () => {
 
     const {
         handleUpdateSearch,
@@ -44,7 +45,8 @@ export const PostContextProvider = ({children}: PostContextProviderProps) => {
     }), [filteredPosts, showModalCreatePost, showModalDeletePost]);
 
     return <PostContext.Provider value={contextValues}>
-        {children}
+        {/*{children}*/}
+        <Outlet/>
     </PostContext.Provider>;
 };
 
