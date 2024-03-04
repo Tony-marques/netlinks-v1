@@ -9,6 +9,7 @@ interface PostProps {
     id: number;
     user: {
         id: number;
+        pseudo: string;
         email: string;
         roles: [];
         image: undefined
@@ -32,7 +33,7 @@ const Post = ({title, user, id}: PostProps) => {
                         alt=""
                     />
                 </div>
-                <p>{user.email}</p>
+                <p>{user.pseudo}</p>
                 {(account.id === user.id || account.roles.includes("ROLE_ADMIN")) &&
                     <i
                         className="fa-solid fa-xmark"
