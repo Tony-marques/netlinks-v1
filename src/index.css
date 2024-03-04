@@ -4,10 +4,16 @@
     padding: 0;
 }
 
-body {
+body, #root {
+    display: flex;
+    width: 100%;
     background-color: #18191A;
     min-height: 100vh;
     font-family: "Montserrat", sans-serif;
+}
+
+#root {
+    border: 1px solid blue;
 }
 
 .active {

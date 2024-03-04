@@ -28,21 +28,25 @@ export const useAuth = () => {
     };
 
     const login = async (form: { email: string, password: string }) => {
-
-        const response = await fetch("https://localhost:8000/login", {
-            method: "POST",
-            body: JSON.stringify(form),
-            credentials: "include",
-            headers: {
-                accept: "application/json",
-                "Content-Type": "application/json"
+        try {
+            const response = await fetch("https://localhost:8000/login", {
+                method: "POST",
+                body: JSON.stringify(form),
+                credentials: "include",
+                headers: {
+                    accept: "application/json",
+                    "Content-Type": "application/json"
+                }
+            });
+            if(response.ok) {
+                authenticated();
+                return;
             }
-        });
-        if(response.ok) {
-            authenticated();
-            return;
+            throw new Error('Erreur de connexion')
+        }catch(e){
+            console.log(e);
         }
-        dispatch(updateAccount(null));
+
     };
 
     return {
