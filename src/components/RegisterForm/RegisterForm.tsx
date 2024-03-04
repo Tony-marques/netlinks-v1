@@ -3,15 +3,17 @@ import {ChangeEvent, FormEvent, useState} from "react";
 import {useAuth} from "../../hooks/useAuth.tsx";
 import {Link} from "react-router-dom";
 
-const EMPTY_USER: { email: string, password: string } = {
+const EMPTY_USER: { email: string, password: string, pseudo?: string} = {
     email: "",
-    password: ""
+    password: "",
+    pseudo: ""
 };
-const LoginForm = () => {
+
+const RegisterForm = () => {
     const [form, setForm] = useState(EMPTY_USER);
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
-    const {login} = useAuth();
+    const {register} = useAuth();
     const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
         setForm((prev) => {
             return {
@@ -24,13 +26,8 @@ const LoginForm = () => {
     const handleOnSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         try {
-            login(form);
-
-            // window.location.reload()
-
+            register(form);
         } catch(err) {
-            //     console.log(err)
-            //     toast("test")
         }
 
     };
@@ -45,7 +42,7 @@ const LoginForm = () => {
             method="POST"
             onSubmit={handleOnSubmit}
         >
-            <h1>Connexion</h1>
+            <h1>Inscription</h1>
 
             <div className="input-group">
                 <input
@@ -53,6 +50,15 @@ const LoginForm = () => {
                     onChange={handleOnChange}
                     name="email"
                     placeholder="Email"
+                />
+            </div>
+
+            <div className="input-group">
+                <input
+                    type="text"
+                    onChange={handleOnChange}
+                    name="pseudo"
+                    placeholder="Pseudo"
                 />
             </div>
 
@@ -73,15 +79,14 @@ const LoginForm = () => {
                 ></i>}
             </div>
 
-            <Link to="#">Mot de passe oublié ?</Link>
-            <button>Se connecter</button>
-            <span>Tu n'as pas de compte ? <Link to="/inscription">Créer mon compte</Link></span>
+            <button>S'inscrire</button>
+            <span>Tu as déjà un compte ? <Link to="/connexion">Se connecter</Link></span>
 
         </LoginFormStyled>
     );
 };
 
-export default LoginForm;
+export default RegisterForm;
 
 const LoginFormStyled = styled.form`
     display: flex;
