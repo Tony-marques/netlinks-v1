@@ -67,7 +67,8 @@ const Navbar = () => {
                     <nav onClick={(e) => e.stopPropagation()}>
                         <Link
                             className="profil-details"
-                            to="#"
+                            to="/profil"
+                            onClick={() => setShowMenu(false)}
                         >
                             <img
                                 src="assets/images/default-profil.jpg"
@@ -101,7 +102,7 @@ const NavbarStyled = styled.div`
     align-items: center;
     justify-content: space-between;
     background-color: #242526;
-    margin-bottom: 1rem;
+    //margin-bottom: 1rem;
     position: relative;
     height: 56px;
     padding: 0 1rem;
@@ -195,7 +196,6 @@ const NavbarStyled = styled.div`
                 align-items: center;
                 font-size: 26px;
                 color: #B0B3B8;
-                //background-color: green;
                 width: 100%;
                 height: 100%;
                 border-radius: 5px;

@@ -6,6 +6,7 @@ import PrivateRoute from "../components/PrivateRoute/PrivateRoute.tsx";
 import Layout from "../components/Layout/Layout.tsx";
 import {PostContextProvider} from "../contexts/PostContext.tsx";
 import RegisterPage from "../pages/RegisterPage/RegisterPage.tsx";
+import ProfilePage from "../pages/ProfilePage/ProfilePage.tsx";
 
 export const router = createBrowserRouter([
     {
@@ -24,7 +25,10 @@ export const router = createBrowserRouter([
                                     {
                                         path: "/",
                                         element: <PostsPage/>
-                                    }
+                                    }, {
+                                        path: "/profil",
+                                        element: <ProfilePage/>
+                                    },
                                 ]
                             }
                         ]

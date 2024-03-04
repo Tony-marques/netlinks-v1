@@ -46,6 +46,7 @@ const PostsPageStyled = styled.div`
     align-items: center;
 
     .whatsUp {
+        margin-top: 1rem;
         padding: 1rem;
         width: 600px;
         background-color: #242526;
