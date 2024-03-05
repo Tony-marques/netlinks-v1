@@ -56,7 +56,7 @@ export const usePost = () => {
 
     useEffect(() => {
         const filteredPosts = posts?.filter((post: IPost) => {
-            return post.title.includes(search);
+            return post.content.includes(search);
         });
         setFilteredPosts(filteredPosts);
     }, [search, posts]);

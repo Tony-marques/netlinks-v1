@@ -9,12 +9,12 @@ const Posts = () => {
 
     return (
         <PostsStyled>
-            {filteredPosts?.map(({id, title, user}: IPost) => {
+            {filteredPosts?.map(({id, content, user}: IPost) => {
                 return (
                     <Post
                         key={id}
                         id={id}
-                        title={title}
+                        content={content}
                         user={user}
                         $size="600"
                     />

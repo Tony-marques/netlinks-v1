@@ -49,11 +49,11 @@ const ProfilePage = () => {
                 </div>
                 <div className="posts">
                     <WhatsUp $size="full" $margin="none" />
-                    {postsPerUser?.map(({id, title, user}) => {
+                    {postsPerUser?.map(({id, content, user}) => {
                         return (
                             <Post
                                 key={id}
-                                title={title}
+                                content={content}
                                 id={id}
                                 user={user}
                                 $size="full"

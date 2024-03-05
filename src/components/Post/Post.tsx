@@ -5,7 +5,7 @@ import Modal from "../Modal/Modal.tsx";
 import ConfirmDeletePost from "../Posts/components/ConfirmDeletePost/ConfirmDeletePost.tsx";
 
 interface PostProps extends PostStyled {
-    title: string;
+    content: string;
     id: number;
     user: {
         id: number;
@@ -20,7 +20,7 @@ interface PostStyled {
     $size: 'full' | "600";
 }
 
-const Post = ({title, user, id, $size = "full"}: PostProps) => {
+const Post = ({content, user, id, $size = "full"}: PostProps) => {
     const {account} = useAuth();
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -55,7 +55,7 @@ const Post = ({title, user, id, $size = "full"}: PostProps) => {
                     />
                 </Modal>}
             </div>
-            <p>{title}</p>
+            <p className="content">{content}</p>
         </PostStyled>
     );
 };
@@ -92,6 +92,9 @@ const PostStyled = styled.div<PostStyled>`
             font-size: 1.5rem;
             cursor: pointer;
         }
+    }
+    .content {
+        white-space: pre-line;
     }
 
     ${({$size}) => $size && size[$size]}
