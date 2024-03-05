@@ -1,10 +1,10 @@
-import {styled} from "styled-components";
-import {useAuth} from "../../../../hooks/useAuth.tsx";
+import {css, styled} from "styled-components";
+import {useAuth} from "../../hooks/useAuth.tsx";
 import {useState} from "react";
-import Modal from "../../../Modal/Modal.tsx";
-import ConfirmDeletePost from "../ConfirmDeletePost/ConfirmDeletePost.tsx";
+import Modal from "../Modal/Modal.tsx";
+import ConfirmDeletePost from "../Posts/components/ConfirmDeletePost/ConfirmDeletePost.tsx";
 
-interface PostProps {
+interface PostProps extends PostStyled {
     title: string;
     id: number;
     user: {
@@ -16,7 +16,11 @@ interface PostProps {
     };
 }
 
-const Post = ({title, user, id}: PostProps) => {
+interface PostStyled {
+    $size: 'full' | "600";
+}
+
+const Post = ({title, user, id, $size = "full"}: PostProps) => {
     const {account} = useAuth();
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -25,7 +29,7 @@ const Post = ({title, user, id}: PostProps) => {
     };
 
     return (
-        <PostStyled>
+        <PostStyled $size={$size}>
             <div className="user-informations">
                 <div className="profil-picture">
                     <img
@@ -58,7 +62,7 @@ const Post = ({title, user, id}: PostProps) => {
 
 export default Post;
 
-const PostStyled = styled.div`
+const PostStyled = styled.div<PostStyled>`
     padding: 1rem;
     width: 600px;
     background-color: #242526;
@@ -89,4 +93,20 @@ const PostStyled = styled.div`
             cursor: pointer;
         }
     }
+
+    ${({$size}) => $size && size[$size]}
+    
 `;
+
+const sizeFull = css`
+    width: 100%;
+`
+
+const size600 = css`
+    width: 600px
+`
+
+const size = {
+    full: sizeFull,
+    [600]: size600
+}

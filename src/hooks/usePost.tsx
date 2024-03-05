@@ -3,9 +3,11 @@ import {IPost} from "../interfaces/Post.ts";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {UserAPI} from "../services/api/Post.ts";
 import {  toast } from 'react-toastify';
+import {useAuth} from "./useAuth.tsx";
 
 
 export const usePost = () => {
+    const {account} = useAuth()
     const [filteredPosts, setFilteredPosts] = useState<IPost[] | undefined>([]);
     const [search, setSearch] = useState<string>("");
     const [showModalCreatePost, setShowModalCreatePost] = useState<boolean>(false);
@@ -16,6 +18,11 @@ export const usePost = () => {
         queryKey: ["posts"],
         queryFn: UserAPI.getPosts
     });
+
+    const {data: postsPerUser}  = useQuery({
+        queryKey: ["posts"],
+        queryFn: () => UserAPI.getPostsPerUser(account.id)
+    })
 
     const {mutate: createPost} = useMutation({
         mutationKey: ["posts"],
@@ -74,6 +81,7 @@ export const usePost = () => {
         createPost,
         deletePost,
         showModalDeletePost,
-        handleShowModalDeletePost
+        handleShowModalDeletePost,
+        postsPerUser
     };
 };

@@ -1,11 +1,7 @@
-import {createContext, ReactNode, useContext, useMemo} from "react";
+import {createContext, useContext, useMemo} from "react";
 import {IPost} from "../interfaces/Post.ts";
 import {usePost} from "../hooks/usePost.tsx";
 import {Outlet} from "react-router-dom";
-
-interface PostContextProviderProps {
-    children: ReactNode;
-}
 
 interface IPostContext {
     filteredPosts: IPost[] | undefined;
@@ -15,7 +11,8 @@ interface IPostContext {
     createPost: (form: { title: string, content: string }) => void;
     deletePost: (id:number) => void;
     showModalDeletePost: boolean;
-    handleShowModalDeletePost: (bool: boolean) => void
+    handleShowModalDeletePost: (bool: boolean) => void;
+    postsPerUser: IPost[] | undefined
 }
 
 const PostContext = createContext<IPostContext | null>(null);
@@ -30,7 +27,8 @@ export const PostContextProvider = () => {
         createPost,
         deletePost,
         showModalDeletePost,
-        handleShowModalDeletePost
+        handleShowModalDeletePost,
+        postsPerUser
     } = usePost();
 
     const contextValues = useMemo(() => ({
@@ -41,11 +39,11 @@ export const PostContextProvider = () => {
         createPost,
         deletePost,
         showModalDeletePost,
-        handleShowModalDeletePost
-    }), [filteredPosts, showModalCreatePost, showModalDeletePost]);
+        handleShowModalDeletePost,
+        postsPerUser
+    }), [filteredPosts, showModalCreatePost, showModalDeletePost, postsPerUser]);
 
     return <PostContext.Provider value={contextValues}>
-        {/*{children}*/}
         <Outlet/>
     </PostContext.Provider>;
 };
