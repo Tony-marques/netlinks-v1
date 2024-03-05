@@ -54,7 +54,7 @@ export default Modal;
 
 const ModalStyled = styled.div`
     background-color: #18191ACF;
-    position: absolute;
+    position: fixed;
     left: 0;
     right: 0;
     top: 0;

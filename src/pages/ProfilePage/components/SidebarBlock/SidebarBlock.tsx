@@ -23,6 +23,7 @@ const SidebarBlockStyled = styled.div`
     border-radius: 5px;
     display: flex;
     flex-direction: column;
+    gap: 1rem;
     
     .title {
         color:#fff;

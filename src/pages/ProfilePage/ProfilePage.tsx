@@ -3,10 +3,13 @@ import {useAuth} from "../../hooks/useAuth.tsx";
 import SidebarBlock from "./components/SidebarBlock/SidebarBlock.tsx";
 import Post from "../../components/Post/Post.tsx";
 import {usePostContext} from "../../contexts/PostContext.tsx";
+import {formatedDate} from "../../utils/date.ts";
 
 const ProfilePage = () => {
     const {account} = useAuth();
     const {postsPerUser} = usePostContext();
+
+    // console.log(account);
 
     return (
         <ProfilePageStyled>
@@ -32,7 +35,14 @@ const ProfilePage = () => {
             <div className="body">
                 <div className="sidebar">
                     <SidebarBlock title="Intro">
-                        test
+                        <div className="sidebar-group">
+                            <i className="fa-solid fa-rss"></i>
+                            <p>Suivi par - "nombre de followers"</p>
+                        </div>
+                        <div className="sidebar-group">
+                            <i className="fa-regular fa-clock"></i>
+                            <p>Membre depuis le {formatedDate(account.createdAt)}</p>
+                        </div>
                     </SidebarBlock>
                     <SidebarBlock title="Photos">
                         test2
@@ -133,6 +143,29 @@ const ProfilePageStyled = styled.div`
             display: flex;
             flex-direction: column;
             gap: 1rem;
+
+            div {
+                display: flex;
+            }
+
+            .sidebar-group {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+
+                i {
+                    color: #8C939D;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 20px;
+                    width: 20px;
+                }
+
+                p {
+                    color: #eee;
+                }
+            }
         }
 
         .posts {
