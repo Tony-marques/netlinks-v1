@@ -1,8 +1,6 @@
 import {styled} from "styled-components";
 import LoginForm from "../../components/LoginForm/LoginForm.tsx";
 
-
-
 const LoginPage = () => {
 
     return (
@@ -20,5 +18,4 @@ const LoginPageStyled = styled.div`
     align-items: center;
     flex-direction: column;
     flex: 1;
-    border: 1px solid red;
 `;

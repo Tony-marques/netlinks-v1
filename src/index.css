@@ -12,10 +12,6 @@ body, #root {
     font-family: "Montserrat", sans-serif;
 }
 
-#root {
-    border: 1px solid blue;
-}
-
 .active {
     border-bottom-color: #0866FF !important;
 

@@ -17,6 +17,20 @@ export class UserAPI {
             console.log(err);
             return []
         }
+    }    static async getPostsPerUser(id: number): Promise<IPost[]> {
+        try {
+            const response = await fetch(UserAPI.url+ `/user/${id}`, {
+                credentials: "include"
+            });
+            const data = await response.json();
+            if(!response.ok) {
+                localStorage.removeItem("user");
+            }
+            return data;
+        } catch(err) {
+            console.log(err);
+            return []
+        }
     }
 
     static async createPost(formData: { title: string, content: string }) {

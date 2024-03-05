@@ -1,5 +1,5 @@
 import {styled} from "styled-components";
-import Post from "./components/Post/Post.tsx";
+import Post from "../Post/Post.tsx";
 import {IPost} from "../../interfaces/Post.ts";
 import {usePostContext} from "../../contexts/PostContext.tsx";
 
@@ -16,6 +16,7 @@ const Posts = () => {
                         id={id}
                         title={title}
                         user={user}
+                        $size="600"
                     />
                 );
             })}
