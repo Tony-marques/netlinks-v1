@@ -8,7 +8,7 @@ interface IPostContext {
     handleUpdateSearch: (value: string) => void;
     showModalCreatePost: boolean;
     handleShowModalCreatePost: (bool: boolean) => void;
-    createPost: (form: { title: string, content: string }) => void;
+    createPost: (form: { content: string }) => void;
     deletePost: (id:number) => void;
     showModalDeletePost: boolean;
     handleShowModalDeletePost: (bool: boolean) => void;
