@@ -5,3 +5,15 @@ export const createPostSchema = z.object({
     "content": z.string().min(3, "Il faut au minimum 3 caractères")
 });
 
+export type FormfieldRegister = z.infer<typeof registerSchema>
+export const registerSchema = z.object({
+    email: z.string().email("Merci de renseigner un email valide"),
+    pseudo: z.string().regex(/^(?=.*[A-Za-z])[A-Za-z\d]{8,}$/, {
+        message: "Le pseudo doit contenir au moins 8 caractères"
+    }),
+    password: z.string()
+        .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, {
+            message: "Le mot de passe doit contenir au moins une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial"
+        })
+});
+

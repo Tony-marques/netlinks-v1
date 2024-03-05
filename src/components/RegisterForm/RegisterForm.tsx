@@ -1,35 +1,26 @@
 import {styled} from "styled-components";
-import {ChangeEvent, FormEvent, useState} from "react";
+import {useState} from "react";
 import {useAuth} from "../../hooks/useAuth.tsx";
 import {Link} from "react-router-dom";
-
-const EMPTY_USER: { email: string, password: string, pseudo?: string} = {
-    email: "",
-    password: "",
-    pseudo: ""
-};
+import {useForm} from "react-hook-form";
+import {FormfieldRegister, registerSchema} from "../../utils/formSchemaValidation.ts";
+import {zodResolver} from "@hookform/resolvers/zod";
 
 const RegisterForm = () => {
-    const [form, setForm] = useState(EMPTY_USER);
     const [showPassword, setShowPassword] = useState<boolean>(false);
+    const {register: registerForm, handleSubmit, formState: {errors}} = useForm<FormfieldRegister>({
+        resolver: zodResolver(registerSchema),
+        mode: "onChange"
+    });
 
     const {register} = useAuth();
-    const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setForm((prev) => {
-            return {
-                ...prev,
-                [event.target.name]: event.target.value
-            };
-        });
-    };
 
-    const handleOnSubmit = (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+    const handleOnSubmit = (data: FormfieldRegister) => {
+        console.log(data);
         try {
-            register(form);
+            register(data);
         } catch(err) {
         }
-
     };
 
     const handleToggleShowPaswword = () => {
@@ -40,43 +31,52 @@ const RegisterForm = () => {
         <LoginFormStyled
             action=""
             method="POST"
-            onSubmit={handleOnSubmit}
+            onSubmit={handleSubmit(handleOnSubmit)}
         >
+
             <h1>Inscription</h1>
 
             <div className="input-group">
                 <input
                     type="text"
-                    onChange={handleOnChange}
-                    name="email"
                     placeholder="Email"
+                    {...registerForm("email")}
                 />
+                {errors.email && <p className="errors">{errors.email.message}</p>}
             </div>
 
             <div className="input-group">
                 <input
                     type="text"
-                    onChange={handleOnChange}
-                    name="pseudo"
                     placeholder="Pseudo"
+                    {...registerForm("pseudo")}
+
                 />
+                {errors.pseudo && <p className="errors">{errors.pseudo.message}</p>}
+
             </div>
 
             <div className="input-group">
-                <input
-                    onChange={handleOnChange}
-                    name="password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Mot de passe"
-                />
-                {showPassword && <i
-                    className="fa-regular fa-eye-slash"
-                    onClick={handleToggleShowPaswword}
-                ></i>}
-                {!showPassword && <i
-                    className="fa-regular fa-eye"
-                    onClick={handleToggleShowPaswword}
-                ></i>}
+                <div className="input-password">
+
+                    <input
+                        {...registerForm("password")}
+
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Mot de passe"
+                    />
+                    {showPassword && <i
+                        className="fa-regular fa-eye-slash"
+                        onClick={handleToggleShowPaswword}
+                    ></i>}
+                    {!showPassword && <i
+                        className="fa-regular fa-eye"
+                        onClick={handleToggleShowPaswword}
+                    ></i>}
+                </div>
+
+                {errors.password && <p className="errors">{errors.password.message}</p>}
+
             </div>
 
             <button>S'inscrire</button>
@@ -107,6 +107,18 @@ const LoginFormStyled = styled.form`
     .input-group {
         width: 100%;
         position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+
+        .input-password {
+            position: relative;
+        }
+
+        .errors {
+            font-size: 0.8rem;
+            color: red;
+        }
 
         input {
             padding: 1rem;
