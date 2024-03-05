@@ -4,12 +4,11 @@ import SidebarBlock from "./components/SidebarBlock/SidebarBlock.tsx";
 import Post from "../../components/Post/Post.tsx";
 import {usePostContext} from "../../contexts/PostContext.tsx";
 import {formatedDate} from "../../utils/date.ts";
+import WhatsUp from "../../components/WhatsUp/WhatsUp.tsx";
 
 const ProfilePage = () => {
     const {account} = useAuth();
     const {postsPerUser} = usePostContext();
-
-    // console.log(account);
 
     return (
         <ProfilePageStyled>
@@ -45,10 +44,11 @@ const ProfilePage = () => {
                         </div>
                     </SidebarBlock>
                     <SidebarBlock title="Photos">
-                        test2
+                        {/*test2*/}
                     </SidebarBlock>
                 </div>
                 <div className="posts">
+                    <WhatsUp $size="full" $margin="none" />
                     {postsPerUser?.map(({id, title, user}) => {
                         return (
                             <Post

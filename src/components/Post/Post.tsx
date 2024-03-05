@@ -67,7 +67,7 @@ const PostStyled = styled.div<PostStyled>`
     width: 600px;
     background-color: #242526;
     color: #E0E1E6;
-    border-radius: 10px;
+    border-radius: 5px;
 
     .user-informations {
         display: flex;
