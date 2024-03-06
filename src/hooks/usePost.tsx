@@ -70,7 +70,6 @@ export const usePost = () => {
     };
     const handleShowModalDeletePost = (bool: boolean) => {
         setShowModalDeletePost(bool);
-        // console.log(showModalDeletePost);
     };
 
     return {

@@ -1,12 +1,10 @@
-import {ChangeEvent, RefObject} from "react";
 
-export const inputConfigs = (handleOnChange: (e: ChangeEvent<HTMLTextAreaElement>) => void, contentRef: RefObject<HTMLTextAreaElement>) => [
+export const inputConfigs = (register) => [
     {
         id: 2,
         type: "text",
         name: "content",
         placeholder: "contenu",
-        ref: contentRef,
-        onChange: handleOnChange
+        register: register("content")
     }
 ];

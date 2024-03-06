@@ -1,54 +1,47 @@
 import {styled} from "styled-components";
-import {ChangeEvent, FormEvent, useEffect, useRef, useState} from "react";
+import {useEffect} from "react";
 import {usePostContext} from "../../../../contexts/PostContext.tsx";
 import {inputConfigs} from "./InputConfigs.tsx";
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {createPostSchema, FormfieldscreatePost} from "../../../../utils/formSchemaValidation.ts";
 
 const CreatePostForm = () => {
-    const [form, setForm] = useState({
-        title: "",
-        content: ""
+    const {handleSubmit, register, formState: {errors, isValid}, setFocus} = useForm<FormfieldscreatePost>({
+        resolver: zodResolver(createPostSchema),
+        mode: "onChange"
     });
-    const contentRef = useRef<HTMLTextAreaElement>(null);
     const {createPost} = usePostContext();
 
-    const handleOnChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        setForm({
-            ...form,
-            [e.target.name]: e.target.value
-        });
-    };
-
-    useEffect(() => {
-        contentRef.current?.focus();
+    useEffect((): void => {
+        setFocus("content")
     }, []);
 
-    const inputs = inputConfigs(handleOnChange, contentRef);
+    const inputs = inputConfigs(register);
 
-    const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        createPost(form);
+    const handleOnSubmit = (data: {content: string}): void => {
+        createPost(data);
     };
 
     return (
         <CreatePostFormStyled>
             <form
-                onSubmit={handleOnSubmit}
+                onSubmit={handleSubmit(handleOnSubmit)}
                 action=""
                 method="POST"
             >
-                {inputs?.map(({id, name, onChange, placeholder, ref}) => {
+                {inputs?.map(({id, placeholder, register}) => {
                     return (
                         <textarea
                             key={id}
-                            name={name}
-                            ref={ref}
                             placeholder={placeholder}
-                            onChange={onChange}
                             rows={8}
+                            {...register}
                         />
                     );
                 })}
-                <button>Publier</button>
+                {errors.content && <p className="errors">{errors.content.message}</p>}
+                <button disabled={!isValid}>{!isValid ? "Renseigner le formulaire" : "Publier"}</button>
             </form>
         </CreatePostFormStyled>
     );
@@ -63,6 +56,11 @@ const CreatePostFormStyled = styled.div`
         display: flex;
         flex-direction: column;
         gap: 1rem;
+
+        .errors {
+            color: red;
+            font-size: 0.8rem;
+        }
 
         input, textarea {
             padding: 1rem;
@@ -85,6 +83,11 @@ const CreatePostFormStyled = styled.div`
             cursor: pointer;
             color: white;
             font-weight: 700;
+
+            &:disabled {
+                background-color: gray;
+                cursor: not-allowed;
+            }
         }
     }
 `;

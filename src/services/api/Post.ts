@@ -33,7 +33,7 @@ export class UserAPI {
         }
     }
 
-    static async createPost(formData: { title: string, content: string }) {
+    static async createPost(formData: {  content: string }) {
         const response = await fetch(UserAPI.url, {
             method: "POST",
             body: JSON.stringify(formData),
