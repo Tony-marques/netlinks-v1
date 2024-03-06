@@ -1,10 +1,12 @@
 import {styled} from "styled-components";
 import RegisterForm from "../../components/RegisterForm/RegisterForm.tsx";
+import Logo from "../../components/Logo/Logo.tsx";
 
 const RegisterPage = () => {
 
     return (
         <RegisterPageStyled>
+            <Logo/>
             <RegisterForm/>
         </RegisterPageStyled>
     );
@@ -18,4 +20,5 @@ const RegisterPageStyled = styled.div`
     align-items: center;
     flex-direction: column;
     flex: 1;
+    gap: 2rem;
 `;
