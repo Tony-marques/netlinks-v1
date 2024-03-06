@@ -2,7 +2,9 @@ import {css, styled} from "styled-components";
 import {useAuth} from "../../hooks/useAuth.tsx";
 import {useState} from "react";
 import Modal from "../Modal/Modal.tsx";
-import ConfirmDeletePost from "../Posts/components/ConfirmDeletePost/ConfirmDeletePost.tsx";
+import ConfirmDeletePost
+    from "../Posts/components/ConfirmDeletePost/ConfirmDeletePost.tsx";
+import Comments from "../Comments/Comments.tsx";
 
 interface PostProps extends PostStyled {
     content: string;
@@ -17,13 +19,17 @@ interface PostProps extends PostStyled {
 }
 
 interface PostStyled {
-    $size: 'full' | "600";
+    $size: "full" | "600";
 }
 
-const Post = ({content, user, id, $size = "full"}: PostProps) => {
+const Post = ({
+    content,
+    user,
+    id,
+    $size = "full"
+}: PostProps) => {
     const {account} = useAuth();
-    const [showDeleteModal, setShowDeleteModal] = useState(false);
-
+    const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
     const handleToggleModal = (bool: boolean) => {
         setShowDeleteModal(bool);
     };
@@ -56,6 +62,9 @@ const Post = ({content, user, id, $size = "full"}: PostProps) => {
                 </Modal>}
             </div>
             <p className="content">{content}</p>
+            <div className="separator"></div>
+            <Comments postId={id}/>
+
         </PostStyled>
     );
 };
@@ -93,23 +102,29 @@ const PostStyled = styled.div<PostStyled>`
             cursor: pointer;
         }
     }
+
     .content {
         white-space: pre-line;
     }
 
+    .separator {
+        border-bottom: 1px solid #3E4042;
+        margin: 0.5rem 0;
+    }
+
     ${({$size}) => $size && size[$size]}
-    
+
 `;
 
 const sizeFull = css`
     width: 100%;
-`
+`;
 
 const size600 = css`
     width: 600px
-`
+`;
 
 const size = {
     full: sizeFull,
     [600]: size600
-}
+};

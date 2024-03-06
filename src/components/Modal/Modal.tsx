@@ -90,9 +90,7 @@ const ModalStyled = styled.div`
                 padding-right: 1rem;
             }
 
-            .separator {
 
-            }
         }
 
 
