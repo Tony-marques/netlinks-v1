@@ -12,17 +12,23 @@ export const registerSchema = z.object({
         message: "Le pseudo doit contenir au moins 5 caractères"
     }),
     password: z.string()
-    //     .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/, {
-    //         message: "Le mot de passe doit contenir au moins une lettre minuscule, une lettre majuscule et un chiffre."
-    //     })
+    //     .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
+    // { message: "Le mot de passe doit contenir au moins
+    // une lettre minuscule, une lettre majuscule et un
+    // chiffre." })
 });
 
 export type FormfieldLogin = z.infer<typeof loginSchema>
 export const loginSchema = z.object({
     email: z.string().email("Merci de renseigner un email valide"),
     password: z.string()
-    //     .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/, {
-    //         message: "Le mot de passe doit contenir au moins une lettre minuscule, une lettre majuscule et un chiffre."
-    //     })
+    //     .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
+    // { message: "Le mot de passe doit contenir au moins
+    // une lettre minuscule, une lettre majuscule et un
+    // chiffre." })
 });
 
+export type FormFieldCreateComment = z.infer<typeof createCommentSchema>
+export const createCommentSchema = z.object({
+    content: z.string().min(1, "Le contenu du commentaire ne doit pas être vide.")
+});
