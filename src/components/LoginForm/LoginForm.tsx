@@ -1,36 +1,25 @@
 import {styled} from "styled-components";
-import {ChangeEvent, FormEvent, useState} from "react";
+import {useState} from "react";
 import {useAuth} from "../../hooks/useAuth.tsx";
 import {Link} from "react-router-dom";
+import {useForm} from "react-hook-form";
+import {FormfieldLogin, FormfieldRegister, loginSchema} from "../../utils/formSchemaValidation.ts";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {isValid} from "zod";
 
-const EMPTY_USER: { email: string, password: string } = {
-    email: "",
-    password: ""
-};
 const LoginForm = () => {
-    const [form, setForm] = useState(EMPTY_USER);
     const [showPassword, setShowPassword] = useState<boolean>(false);
-
+    const {register, handleSubmit, formState: {errors, isValid}} = useForm<FormfieldRegister>({
+        resolver: zodResolver(loginSchema),
+        mode: "onChange"
+    });
     const {login} = useAuth();
-    const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setForm((prev) => {
-            return {
-                ...prev,
-                [event.target.name]: event.target.value
-            };
-        });
-    };
 
-    const handleOnSubmit = (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+    const handleOnSubmit = (data: FormfieldLogin) => {
+        console.log(data);
         try {
-            login(form);
-
-            // window.location.reload()
-
+            // login(data);
         } catch(err) {
-            //     console.log(err)
-            //     toast("test")
         }
 
     };
@@ -43,38 +32,43 @@ const LoginForm = () => {
         <LoginFormStyled
             action=""
             method="POST"
-            onSubmit={handleOnSubmit}
+            onSubmit={handleSubmit(handleOnSubmit)}
         >
             <h1>Connexion</h1>
 
             <div className="input-group">
                 <input
                     type="text"
-                    onChange={handleOnChange}
-                    name="email"
                     placeholder="Email"
+                    {...register("email")}
                 />
+                {errors.email && <p className="errors">{errors.email.message}</p>}
+
             </div>
 
             <div className="input-group">
-                <input
-                    onChange={handleOnChange}
-                    name="password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Mot de passe"
-                />
-                {showPassword && <i
-                    className="fa-regular fa-eye-slash"
-                    onClick={handleToggleShowPaswword}
-                ></i>}
-                {!showPassword && <i
-                    className="fa-regular fa-eye"
-                    onClick={handleToggleShowPaswword}
-                ></i>}
+                <div className="input-password">
+
+                    <input
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Mot de passe"
+                        {...register("password")}
+                    />
+                    {showPassword && <i
+                        className="fa-regular fa-eye-slash"
+                        onClick={handleToggleShowPaswword}
+                    ></i>}
+                    {!showPassword && <i
+                        className="fa-regular fa-eye"
+                        onClick={handleToggleShowPaswword}
+                    ></i>}
+                </div>
+                {errors.password && <p className="errors">{errors.password.message}</p>}
+
             </div>
 
             <Link to="#">Mot de passe oublié ?</Link>
-            <button>Se connecter</button>
+            <button disabled={!isValid}>Se connecter</button>
             <span>Tu n'as pas de compte ? <Link to="/inscription">Créer mon compte</Link></span>
 
         </LoginFormStyled>
@@ -102,6 +96,18 @@ const LoginFormStyled = styled.form`
     .input-group {
         width: 100%;
         position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+
+        .input-password {
+            position: relative;
+        }
+
+        .errors {
+            font-size: 0.8rem;
+            color: red;
+        }
 
         input {
             padding: 1rem;
@@ -138,6 +144,11 @@ const LoginFormStyled = styled.form`
         color: white;
         font-weight: 700;
         width: 100%;
+        
+        &:disabled{
+            background-color: gray;
+            cursor: not-allowed;
+        }
     }
 
     span {

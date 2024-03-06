@@ -12,8 +12,17 @@ export const registerSchema = z.object({
         message: "Le pseudo doit contenir au moins 8 caractères"
     }),
     password: z.string()
-        .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, {
-            message: "Le mot de passe doit contenir au moins une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial"
+        .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/, {
+            message: "Le mot de passe doit contenir au moins une lettre minuscule, une lettre majuscule et un chiffre."
+        })
+});
+
+export type FormfieldLogin = z.infer<typeof loginSchema>
+export const loginSchema = z.object({
+    email: z.string().email("Merci de renseigner un email valide"),
+    password: z.string()
+        .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/, {
+            message: "Le mot de passe doit contenir au moins une lettre minuscule, une lettre majuscule et un chiffre."
         })
 });
 
