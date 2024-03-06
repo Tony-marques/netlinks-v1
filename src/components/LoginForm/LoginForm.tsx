@@ -1,24 +1,26 @@
 import {styled} from "styled-components";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useAuth} from "../../hooks/useAuth.tsx";
 import {Link} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import {FormfieldLogin, FormfieldRegister, loginSchema} from "../../utils/formSchemaValidation.ts";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {isValid} from "zod";
 
 const LoginForm = () => {
     const [showPassword, setShowPassword] = useState<boolean>(false);
-    const {register, handleSubmit, formState: {errors, isValid}} = useForm<FormfieldRegister>({
+    const {register, handleSubmit, formState: {errors, isValid}, setFocus} = useForm<FormfieldRegister>({
         resolver: zodResolver(loginSchema),
         mode: "onChange"
     });
     const {login} = useAuth();
 
+    useEffect((): void => {
+        setFocus("email")
+    }, []);
+
     const handleOnSubmit = (data: FormfieldLogin) => {
-        console.log(data);
         try {
-            // login(data);
+            login(data);
         } catch(err) {
         }
 

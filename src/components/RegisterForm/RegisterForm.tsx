@@ -1,5 +1,5 @@
 import {styled} from "styled-components";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useAuth} from "../../hooks/useAuth.tsx";
 import {Link} from "react-router-dom";
 import {useForm} from "react-hook-form";
@@ -8,12 +8,16 @@ import {zodResolver} from "@hookform/resolvers/zod";
 
 const RegisterForm = () => {
     const [showPassword, setShowPassword] = useState<boolean>(false);
-    const {register: registerForm, handleSubmit, formState: {errors}} = useForm<FormfieldRegister>({
+    const {register: registerForm, handleSubmit, formState: {errors, isValid}, setFocus} = useForm<FormfieldRegister>({
         resolver: zodResolver(registerSchema),
         mode: "onChange"
     });
 
     const {register} = useAuth();
+
+    useEffect((): void => {
+        setFocus("email")
+    }, []);
 
     const handleOnSubmit = (data: FormfieldRegister) => {
         console.log(data);
@@ -79,7 +83,7 @@ const RegisterForm = () => {
 
             </div>
 
-            <button>S'inscrire</button>
+            <button disabled={!isValid}>S'inscrire</button>
             <span>Tu as déjà un compte ? <Link to="/connexion">Se connecter</Link></span>
 
         </LoginFormStyled>
@@ -155,6 +159,11 @@ const LoginFormStyled = styled.form`
         color: white;
         font-weight: 700;
         width: 100%;
+
+        &:disabled{
+            background-color: gray;
+            cursor: not-allowed;
+        }
     }
 
     span {
